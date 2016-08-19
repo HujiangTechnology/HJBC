@@ -1,0 +1,62 @@
+apply plugin: 'maven'
+
+//Properties properties = new Properties()
+//if (project.file('../local.properties').exists()) {
+//    properties.load(project.file('../local.properties').newDataInputStream())
+//}
+//
+//def nRelease = 'nexus.releases'
+//def nSnapshot = 'nexus.snapshots'
+//def nUserName = 'nexus.username'
+//def nPassword = 'nexus.password'
+//def nexusReleases = properties.contains(nRelease) ? properties.getProperty(nRelease) : ""
+//def nexusSnapshots = properties.contains(nSnapshot) ? properties.getProperty(nSnapshot) : ""
+//def nexusUserName = properties.contains(nUserName) ? properties.getProperty(nUserName) : ""
+//def nexusPassword = properties.contains(nPassword) ? properties.getProperty(nPassword) : ""
+
+version=LIB_VERSION
+group = GROUP
+def nexusRepositoryUrl=nexusReleases
+
+if (!LIB_ISRELEASE.toBoolean()){
+    version = "${version}-SNAPSHOT"
+    nexusRepositoryUrl=nexusSnapshots
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "$nexusRepositoryUrl") {
+                authentication(userName: nexusUserName, password: nexusPassword)
+            }
+
+            pom.project {
+                name LIB_ARTIFACT
+                groupId GROUP
+                artifactId LIB_ARTIFACT
+                version version
+                packaging POM_PACKAGING
+                description LIB_DES
+                licenses {
+                    license {
+                        name LICENCE_NAME
+                        url LICENCE_URL
+                        distribution LICENCE_DIST
+                    }
+                }
+                developers {
+                    developer {
+                        id DEVELOPER_ID
+                        name DEVELOPER_NAME
+                        email DEVELOPER_EMAIL
+                    }
+                }
+
+                organization {
+                    name ORGANIZATION_NAME
+                    url ORGANIZATION_URL
+                }
+            }
+        }
+    }
+}

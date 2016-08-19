@@ -1,0 +1,5 @@
+include ':hjbc-sample-app'
+include ':hjbc-sample-library'
+include ':hjbc-annotation'
+include ':hjbc-compiler'
+include ':hjbc-gradle-plugin'
